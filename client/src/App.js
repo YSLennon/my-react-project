@@ -11,12 +11,16 @@ import ChessImageList from './components/container/ImageList.js';
 import SideMenu from './components/container/LeftMenu.js';
 import CustomDialog from './components/container/Dialog.js';
 import InputJs from './components/input/input.js';
+import StudyRedux from './StudyRedux.js';
+
+
 const ariaLabel = { 'aria-label': 'description' };
 
-function App() {
+function App() { 
   return (
     <ThemeProvider theme={theme('light')}>
-      <div className="App">
+      <StudyRedux/>
+      {/* <div className="App">
       <CustomDialog />
       <CustomButton text="Button" onclick={()=>{alert('hi')}}/>
           <SearchBox ></SearchBox>
@@ -26,7 +30,7 @@ function App() {
           <MyAvatar alt="a" src="iu_profile.jpg" />
           <ChessImageList/>
           <SideMenu />
-      </div>
+      </div> */}
     </ThemeProvider>
   );
 }
