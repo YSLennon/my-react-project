@@ -5,7 +5,7 @@ const app = express();
 app.set('port', process.env.PORT || 3000);
 
 app.listen(app.get('port'), () => {
-    console.log(app.get('port'), '번 포트에서 대기 중');
+    console.log(app.get('port'), '번 포트에서 대기 중, multer, bcrypt, jsonwebtoken 다시 받았으니까 확인해보기');
 });
 app.use(express.static(path.join(__dirname, '../client/build')));
 
