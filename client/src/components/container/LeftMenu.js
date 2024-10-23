@@ -2,13 +2,13 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import ToolTip from './ToolTip';
-import { iconPath } from '../../constants/path';
+import { ICON_Path } from '../../constants/path';
 import { IconButton, Stack } from '@mui/material';
 import { useEffect } from 'react';
 
 export default function SideMenu() {
   const [checked, setChecked] = React.useState(false);
-  const icon = iconPath;
+  const icon = ICON_Path;
   const sideMenuStyle = {
     display: 'inline-block',
     width: 'fit-content'

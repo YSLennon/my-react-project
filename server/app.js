@@ -12,7 +12,7 @@ app.use(cors({ origin : 'http://localhost:3000' }));
 app.use(bodyParser.json());
 
 app.use('/user', require(basePath+'user'));
-app.use('/user', require(basePath+'feed'));
+// app.use('/user', require(basePath+'feed'));
 
 
 // 배포 시 빌드파일 읽을 때 쓴다고 했던듯? 코딩애플 react-express 참고!
