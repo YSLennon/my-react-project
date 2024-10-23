@@ -19,7 +19,7 @@ const theme = (mode) => createTheme({
         secondary: {
           main: '#d32f2f',  // secondary 색상
         },
-    }    
+    } 
   },
   typography: {
     fontSize: 14,  // 기본 폰트 크기 설정
@@ -31,10 +31,38 @@ const theme = (mode) => createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          padding: '4px 16px',  // 모든 Button에 기본 패딩 설정
+          padding: '10px 16px',  // 모든 Button에 기본 패딩 설정
         //   color: '#fff7da',
-          width: '90%'
+          width: '80%',
+          margin: '10px auto',
+          borderRadius:'10px',
 
+        },
+      },
+    },
+    MuiFormControl: {
+      styleOverrides: {
+        root: {
+          margin: '10px auto',
+          border: '1px solid #eee',
+          borderRadius: '10px',
+          background: '#eee',
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          marginLeft: '10px',
+          fontSize: '16px'
+        },
+      },
+    },
+    MuiInput: {
+      styleOverrides: {
+        root: {
+          marginLeft: '10px',
+          fontSize: '16px'
         },
       },
     },

@@ -4,11 +4,11 @@ import Stack from '@mui/material/Stack';
 
 export const CustomButton = (props) => {
     return (
-        <div>
+        <>
           <Button variant="contained" onClick={props.onclick}>
             {props.text}
           </Button>
-        </div>
+        </>
     );
 };
 
