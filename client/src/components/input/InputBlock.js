@@ -33,11 +33,11 @@ const InputBlock = (props) => {
         <FormControl sx={{ m: 1, width: '80%', margin:'10px auto',
           borderColor: condition ? '#66bb6a' : 'red', 
           borderWidth: condition ? '2px': '1px',
-          borderStyle: (condition !== null) ? 'solid' : 'none' }} variant="standard">
+          borderStyle: (condition !== null && props.type !== 'login') ? 'solid' : 'none' }} variant="standard">
           <InputLabel htmlFor="standard-adornment-password"
           sx={{fontWeight: condition?'bold':'normal', color: condition ? '#66bb6a' : 'default' }} >{props.text}</InputLabel>
           <Input
-            id="standard-adornment-password"
+            id={props.text}
             type={showPassword ? 'text' : 'password'}
             disableUnderline // 밑줄 없애기
             
@@ -60,7 +60,7 @@ const InputBlock = (props) => {
             }
           />
         </FormControl>
-        {(condition === null || condition) ?'': getJoinRegexMsg
+        {(condition === null || condition || props.type === 'login') ?'': getJoinRegexMsg
          }
       </>
   );

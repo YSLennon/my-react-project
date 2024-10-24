@@ -2,8 +2,8 @@ import './App.css';
 import theme from './styles/theme.js'
 import { ThemeProvider } from '@emotion/react';
 import { Provider } from 'react-redux';
-import { store } from './hooks/storeTest.js';
 import Page from './pages/Page.js';
+import { store } from './store/store.js';
 
 
 const ariaLabel = { 'aria-label': 'description' };

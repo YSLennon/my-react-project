@@ -1,18 +1,26 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'test1234',
-    database: 'reactsns'
-});
-
-connection.connect((err) => {
-    if(err){
+const getConnection = async () => {
+    try{
+        const result = await mysql.createConnection({
+            host: 'localhost',
+            user: 'root',
+            password: 'test1234',
+            database: 'reactsns'
+        });
+        console.log('Running MySQL');
+        return result;
+    } catch(err){
         console.log('MySQL Error:', err );
         return;
     }
-    console.log('Running MySQL')
-})
+} 
 
-module.exports = connection;
+// connection.connect((err) => {
+//     if(err){
+        
+//     }
+    
+// })
+
+module.exports = getConnection;

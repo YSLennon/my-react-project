@@ -13,4 +13,4 @@ export const counterSlice = createSlice({
   }
 })
 export const {plus, change} = counterSlice.actions
-console.log(counterSlice);
+

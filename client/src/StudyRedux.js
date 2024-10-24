@@ -51,7 +51,6 @@ const StudyRedux = () => {
     // const [state, setState] = useState({number: 1})
     const dispatch = useDispatch();
     const count = useSelector((state) => {
-      console.log(state);
       return state.counter.value
     });
 

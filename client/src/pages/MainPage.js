@@ -24,7 +24,7 @@ const MainPage = () => {
             <FlexContainer style={styleMain}>
             {/* <MiniDrawer /> */}
             <CustomBadge/>
-            <StudyRedux/>
+            {/* <StudyRedux/> */}
             <CustomDialog />
             <CustomButton text="Button" onclick={()=>{alert('hi')}}/>
             <SearchBox ></SearchBox>
