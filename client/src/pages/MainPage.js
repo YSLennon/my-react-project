@@ -11,14 +11,38 @@ import MiniDrawer from '../components/container/Drawer.js';
 import FixedContainer from '../components/container/FixedContainer.js';
 import { styleMain } from '../styles/styleMain.js';
 import { styleSide } from '../styles/styleSide.js';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import FlexContainer from '../components/container/FlexContainer.js';
 
+import axios from 'axios';
+import { FEED_URL } from '../constants/path.js';
+
 const MainPage = () => {
+    const [value, setValue] = useState(null);
+    const token = sessionStorage.getItem('token')
+
+    let isLogin = async () => {
+        try{
+        const result = await axios.get(FEED_URL, {
+            headers: { token },
+            withCredentials: true,
+        });
+        alert('by')
+    }
+    catch(e){
+        console.log(e);
+    }
+        // console.log(result)
+    }
+        isLogin();
+
+    useEffect(() => {
+    }, [])
+
     return (
         <>
             <FixedContainer style={styleSide}>
-            <SideMenu />
+                <SideMenu />
 
             </FixedContainer>
             <FlexContainer style={styleMain}>

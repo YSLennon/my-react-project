@@ -3,13 +3,14 @@ const router = express.Router();
 const getConnection = require('../db');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const jwt = require('jsonwebtoken');
-const JWT_KEY = require('../auth')
+const jwt = require('../utils/jwtUtil');
+const authJWT = require('../middleware/authJWT');
+const getRedisClient = require('../utils/redis');
 
 const connection = getConnection();
 
 router.route('/')
-    .get(async (req, res) => {
+    .get(async (req, res) => { // 미정
         try{
             const connection = await getConnection();
             // const {id, pwd, name, phone} = req.body;
@@ -22,7 +23,7 @@ router.route('/')
 
         }        
     })
-    .post(async (req, res) => {
+    .post(async (req, res) => { // 회원가입
         try{
             const connection = await getConnection();
             const {id, pwd, name, phone} = req.body;
@@ -48,7 +49,7 @@ router.route('/')
         }
     })
 router.route('/:id')
-    .post(async (req, res) => {
+    .post( async (req, res) => { // 로그인
         try{
             const connection = await getConnection();
             const {pwd} = req.body;
@@ -61,17 +62,41 @@ router.route('/:id')
             }
             const checkPwd = await bcrypt.compare(pwd, user.pwd);
             if(checkPwd){
-                console.log(user)// 로그인 성공
+                const accessToken = jwt.getAccessToken(user);
+                const refreshToken = jwt.getRefreshToken();
+                const redisClient = req.app.locals.redisClient;
+                await redisClient.set(user.id, refreshToken);
+                redisClient.quit();
+                // client에 accessToken 돌려줌
 
-                console.log(JWT_KEY)
-                const token = await jwt.sign({userId: user.id, name: user.name, phone: user.phone}, JWT_KEY, {expiresIn: '5m'});
-                res.json({success: true, message: '로그인 되었습니다.', token: token});
+                res.cookie('refreshToken', refreshToken, {
+                    httpOnly: true,
+                    secure: false, // true 시 https에서만 전송
+                    maxAge: 14 * 24 * 60 * 60 * 1000, // 쿠키 만료 시간: 14일
+                });
+
+                res.cookie('hello', 'refreshToken', {
+                    httpOnly: true,
+                    secure: false, // true 시 https에서만 전송
+                    maxAge: 14 * 24 * 60 * 60 * 1000, // 쿠키 만료 시간: 14일
+
+                });
+
+                res.json({
+                    success: true,
+                    message: '로그인 되었습니다',
+                    accessToken,
+                });
+
             } else {
-                console.log('login 실패')
+                res.json({
+                    success: false,
+                    message: '비밀번호가 일치하지 않습니다',
+                });
             }
         } catch(err){
             res.json({success: false, message: err});
         }
     })
 
-    module.exports = router;
+module.exports = router;

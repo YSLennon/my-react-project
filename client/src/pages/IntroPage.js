@@ -56,9 +56,9 @@ const IntroPage = () => {
         const res = await axios.post(USER_URL, user);
         if(res.data.success){
             console.log(popupSlice.actions)
-            disaptch(handleOpen(res.data.message));
+            // disaptch(handleOpen(res.data.message));
         } else {
-            disaptch(handleOpen(res.data.message));
+            // disaptch(handleOpen(res.data.message));
         }
     }
 

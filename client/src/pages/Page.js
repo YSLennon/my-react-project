@@ -6,10 +6,12 @@ import LoginPage from './LoginPage';
 
 
 const Page = () => {
+    
+
     return (
         <Router>
             <Routes>
-                <Route path='/' element={<MainPage />} />
+                <Route path='/main' element={<MainPage />} />
                 <Route path='/join' element={<IntroPage />} />
                 <Route path='/intro' element={<LoginPage />} />
             </Routes>

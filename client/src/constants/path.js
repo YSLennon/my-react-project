@@ -7,3 +7,4 @@ export const PROFILE_PATH = BASE_PATH+'profile/'
 
 export const BASE_URL = 'http://localhost:3100/'
 export const USER_URL = BASE_URL+'user/'
+export const FEED_URL = BASE_URL+'feed/'

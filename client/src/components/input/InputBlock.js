@@ -34,7 +34,7 @@ const InputBlock = (props) => {
           borderColor: condition ? '#66bb6a' : 'red', 
           borderWidth: condition ? '2px': '1px',
           borderStyle: (condition !== null && props.type !== 'login') ? 'solid' : 'none' }} variant="standard">
-          <InputLabel htmlFor="standard-adornment-password"
+          <InputLabel
           sx={{fontWeight: condition?'bold':'normal', color: condition ? '#66bb6a' : 'default' }} >{props.text}</InputLabel>
           <Input
             id={props.text}
