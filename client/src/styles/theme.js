@@ -66,6 +66,36 @@ const theme = (mode) => createTheme({
         },
       },
     },
+    MuiDialog: {
+      styleOverrides: {
+        root: {
+          width: '100%',
+          height: '100%',
+          fontSize: '16px'
+        },
+      },
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          display:'flex',
+          background:'#bbb',
+          fontSize: '18px',
+          fontWeight: 'bold',
+          opacity: '0.95',
+          padding:'5px 15px'
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          width: '100%',
+          height: '100%',
+          fontSize: '16px'
+        },
+      },
+    },
   },
 });
 

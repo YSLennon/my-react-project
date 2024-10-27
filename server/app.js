@@ -14,7 +14,9 @@ const startServer = async () => {
     app.locals.redisClient = await getRedisClient();
     
     app.use(express.json());
-    app.use(express.urlencoded({ extended: true})); // bodyParser랑 엮여있던듯?
+    app.use(express.json({ type: 'application/json; charset=utf-8' }));
+    app.use(express.urlencoded({ extended: true, type: 'application/x-www-form-urlencoded; charset=utf-8' }));
+    // app.use(express.urlencoded({ extended: true})); // bodyParser랑 엮여있던듯?
     app.use(cookieParser());
     app.use(bodyParser.json());
     app.use(cors({
@@ -24,6 +26,7 @@ const startServer = async () => {
     
     app.use('/user', require(basePath+'user'));
     app.use('/feed', require(basePath+'feed'));
+    app.use('/refresh', require(basePath+'refresh'));
     app.use('/test', require(basePath+'test'));
     
     

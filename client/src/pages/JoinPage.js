@@ -1,13 +1,12 @@
 import React, { useReducer, useRef } from 'react';
-import FlexContainer from '../components/container/FlexContainer';
+import FlexContainer from '../components/layout/FlexContainer';
 import { PROFILE_PATH, USER_URL } from '../constants/path';
 import { styleIntro } from '../styles/styleIntro';
-import FlexSubContainer from '../components/container/FlexSubContainer';
+import FlexSubContainer from '../components/layout/FlexSubContainer';
 import InputBlock from '../components/input/InputBlock';
 import CustomButton from '../components/button/Button';
 import { FormControl,  } from '@mui/material';
 import axios from 'axios'
-import CustomPopup from '../components/popup/CustomPopup';
 import { useDispatch } from 'react-redux';
 import { popupSlice, handleOpen } from '../store/slices/popupSlice';
 import { emailRegex, nameRegex, passwordRegex, phoneRegex } from '../constants/regex';
@@ -34,7 +33,7 @@ const reducer = (state, action) => {
     }
 }
 
-const IntroPage = () => {
+const JoinPage = () => {
     const disaptch = useDispatch();
     const [user, userDispatch] = useReducer(reducer, initialState);
 
@@ -76,20 +75,19 @@ const IntroPage = () => {
                         )
                     })}
                     
-                    <CustomButton text='회원가입' onclick={()=>{
+                    <CustomButton keypress={true} text='회원가입' onclick={()=>{
                         joinIn()
                     }}/>
                     <div style={{flex: 1}}></div>
                     <FormControl sx={{ background: 'none', border: 'none'}}>
-                        <div>계정이 있으신가요? <a style={{cursor: 'pointer', color:'#868fa8', fontWeight:'bold'}}>로그인</a></div>
+                        <div>계정이 있으신가요? <a href='/intro' style={{cursor: 'pointer', color:'#868fa8', fontWeight:'bold'}}>로그인</a></div>
                     </FormControl>
                     
                 </FlexSubContainer>
-                <CustomPopup />
                 
             </FlexContainer>
         </>
     );
 };
 
-export default IntroPage;
+export default JoinPage;

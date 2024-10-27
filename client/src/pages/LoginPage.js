@@ -1,20 +1,19 @@
 import React, { useReducer, useRef } from 'react';
-import FlexContainer from '../components/container/FlexContainer';
+import FlexContainer from '../components/layout/FlexContainer';
 import { FEED_URL, PROFILE_PATH, USER_URL } from '../constants/path';
 import { styleIntro } from '../styles/styleIntro';
-import FlexSubContainer from '../components/container/FlexSubContainer';
+import FlexSubContainer from '../components/layout/FlexSubContainer';
 import InputBlock from '../components/input/InputBlock';
 import CustomButton from '../components/button/Button';
 import { FormControl,  } from '@mui/material';
 import axios from 'axios'
-import CustomPopup from '../components/popup/CustomPopup';
 import { useDispatch } from 'react-redux';
-import { popupSlice, handleOpen } from '../store/slices/popupSlice';
+import { handleOpen } from '../store/slices/popupSlice';
 import { useNavigate } from 'react-router-dom';
 import { decode } from '../services/decode'
 
 const initialState = {
-    id: '',
+    id: '0',
     pwd: ''
 }
 const reducer = (state, action) => {
@@ -27,6 +26,8 @@ const reducer = (state, action) => {
 }
 
 const LoginPage = () => {
+    const idRef = useRef();
+    const pwdRef = useRef();
     const navigate = useNavigate();
     const disaptch = useDispatch();
     const [user, userDispatch] = useReducer(reducer, initialState);
@@ -35,12 +36,16 @@ const LoginPage = () => {
         const res = await axios.post(USER_URL+user.id, user, {
             withCredentials: true,
         });
-
+        if(user.id === '' || user.id === null || user.id === undefined){
+            userDispatch({type: 'ID', value:'invalid Id'});
+        }
+        console.log(res)
         if(res.data.success){
             const user = decode(res.data.accessToken);
-            console.log(res);
             sessionStorage.setItem('token', res.data.accessToken);
-            sessionStorage.setItem('user', user);
+            sessionStorage.setItem('id', user.id);
+            sessionStorage.setItem('name', user.name);
+            sessionStorage.setItem('phone', user.phone);
             
             const token = res.data.accessToken;
             const result = await axios.get(FEED_URL, {
@@ -50,8 +55,15 @@ const LoginPage = () => {
             console.log(result)
 
             navigate('/main')
-        } else {
+        } else {        
+            console.log('hi')
+
             disaptch(handleOpen(res.data.message));
+            if(res.data.type === 'id'){
+                idRef.current.focus();
+            } else {
+                pwdRef.current.focus();
+            }
         }
     }
 
@@ -65,21 +77,20 @@ const LoginPage = () => {
                     <img src='./clean_logo.png' style={{margin: '10px auto'}} width='30%'  />
                     {['ID', 'Password'].map((item, index) => {
                         return (
-                            <InputBlock type='login' text={item} dispatch={userDispatch} pwd={user.pwd} key={index}/>
+                            <InputBlock type='login' text={item} loginRef={index === 0 ?idRef:pwdRef} dispatch={userDispatch} pwd={user.pwd} key={index}/>
                         )
                     })}
                     
-                    <CustomButton text='로그인' onclick={()=>{
+                    <CustomButton keypress={true} text='로그인' onclick={()=>{
                         login()
                         // tempFunction()
                     }}/>
                     <div style={{flex: 1}}></div>
                     <FormControl sx={{ background: 'none', border: 'none'}}>
-                        <div>계정이 없으신가요? <a style={{cursor: 'pointer', color:'#868fa8', fontWeight:'bold'}}>회원가입</a></div>
+                        <div>계정이 없으신가요? <a href='/join' style={{cursor: 'pointer', color:'#868fa8', fontWeight:'bold'}}>회원가입</a></div>
                     </FormControl>
                     
                 </FlexSubContainer>
-                <CustomPopup />
                 
             </FlexContainer>
         </>

@@ -35,9 +35,10 @@ const InputBlock = (props) => {
           borderWidth: condition ? '2px': '1px',
           borderStyle: (condition !== null && props.type !== 'login') ? 'solid' : 'none' }} variant="standard">
           <InputLabel
-          sx={{fontWeight: condition?'bold':'normal', color: condition ? '#66bb6a' : 'default' }} >{props.text}</InputLabel>
+          sx={{fontWeight: (condition && props.type !== 'login') ? 'bold' : 'normal', color: (condition && props.type !== 'login') ? '#66bb6a' : 'default' }} >{props.text}</InputLabel>
           <Input
             id={props.text}
+            inputRef={props.loginRef}
             type={showPassword ? 'text' : 'password'}
             disableUnderline // 밑줄 없애기
             

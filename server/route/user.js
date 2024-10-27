@@ -49,6 +49,21 @@ router.route('/')
         }
     })
 router.route('/:id')
+    .get( async (req, res) => { // 로그아웃
+        const token = req.headers.token;
+        try{
+            const redisClient = await getRedisClient()
+            const userId = req.params.id;
+            await redisClient.del(userId);
+            res.clearCookie('refreshToken', {
+                httpOnly: true,
+                secure: false, 
+            });
+            res.json({success: true, message: '로그아웃 되었습니다.'})
+        } catch(err){
+            res.json({success: false, message: err});
+        }
+    })
     .post( async (req, res) => { // 로그인
         try{
             const connection = await getConnection();
@@ -56,30 +71,25 @@ router.route('/:id')
             const query = 'SELECT * FROM TBL_USER WHERE ID = ?'
             const [results] = await connection.query(query,[req.params.id])
             const user = results[0]
+            console.log(results)
+
             if(results.length < 1) {
-                res.json({success: false, message: '존재하지 않는 아이디입니다. 아이디를 확인해주세요.'});
+                res.json({success: false, type:'id', message: '존재하지 않는 아이디입니다. 아이디를 확인해주세요.'});
                 return;
             }
             const checkPwd = await bcrypt.compare(pwd, user.pwd);
             if(checkPwd){
                 const accessToken = jwt.getAccessToken(user);
                 const refreshToken = jwt.getRefreshToken();
-                const redisClient = req.app.locals.redisClient;
+                const redisClient = await getRedisClient()
                 await redisClient.set(user.id, refreshToken);
-                redisClient.quit();
+
                 // client에 accessToken 돌려줌
 
                 res.cookie('refreshToken', refreshToken, {
                     httpOnly: true,
                     secure: false, // true 시 https에서만 전송
                     maxAge: 14 * 24 * 60 * 60 * 1000, // 쿠키 만료 시간: 14일
-                });
-
-                res.cookie('hello', 'refreshToken', {
-                    httpOnly: true,
-                    secure: false, // true 시 https에서만 전송
-                    maxAge: 14 * 24 * 60 * 60 * 1000, // 쿠키 만료 시간: 14일
-
                 });
 
                 res.json({
@@ -91,11 +101,13 @@ router.route('/:id')
             } else {
                 res.json({
                     success: false,
+                    type:'pwd',
                     message: '비밀번호가 일치하지 않습니다',
                 });
             }
         } catch(err){
-            res.json({success: false, message: err});
+            console.log(err);
+            res.json({success: false, message: err+123});
         }
     })
 

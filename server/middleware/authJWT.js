@@ -5,10 +5,7 @@ const authJWT = (req, res, next) => {
     const token = req.headers.token
 
     if(token) {
-        // const token = req.headers.authorization;
-        console.log(req.headers)
         const cookies = req.cookies
-        console.log(cookies);
 
         const result = verify(token);
         if(result.success){
@@ -17,15 +14,12 @@ const authJWT = (req, res, next) => {
             req.phone = result.phone;
             next();
         } else {
-            console.log('hi')
-
             res.status(401).json({
                 success: false,
                 message: result.message,
             })
         };
     } else {
-    console.log('his')
         res.status(401).send({
             success: false,
             // message: result.message,
