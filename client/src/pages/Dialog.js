@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
@@ -14,12 +14,13 @@ import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
 import { blue } from '@mui/material/colors';
 import {Provider, useSelector, useDispatch, connect} from 'react-redux';
-import { handleDialogClose, afterClose } from '../store/slices/dialogSlice';
+import { handleDialogClose, afterClose, handleDialogOpen } from '../store/slices/dialogSlice';
 import { addImageDialog, feedATag, feedDetail } from '../styles/styleDialog';
 import SelectImage from '../components/input/SelectImage';
 import FeedDetail from '../components/container/FeedDetail';
 import axiosInstance from '../services/authAxios';
 import { FEED_URL } from '../constants/path';
+import { handleOpen } from '../store/slices/popupSlice';
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];
  
@@ -38,9 +39,9 @@ const reducer = (state, action) => {
  
 export default function CustomDialog(props) {
   const [fileImages, setFileImages] = useState([]);
-  const textRef=React.useRef('');
+  const textRef=useRef('');
   const id = sessionStorage.getItem('id');
-
+  const token = sessionStorage.getItem('token');
   const { open, title, style } = useSelector((state) => state.dialog);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -65,10 +66,19 @@ export default function CustomDialog(props) {
     try {
         const res = await axiosInstance.post(FEED_URL+id, formData, {
             headers: {
+                token,
+                withCredentials: true,
                 'Content-Type': 'multipart/form-data',
             },
         });
-        console.log(res.data); // 서버에서의 응답 출력
+        if(res.data.success){
+          dispatch(handleOpen(res.data.message));
+          setTimeout(()=>{dispatch(afterClose())}, 200);
+          textRef.current = '';
+          setFileImages([]);
+          dispatch(handleDialogClose());
+        }
+        
     } catch (error) {
         console.error('Error uploading files:', error);
     }
@@ -85,7 +95,7 @@ export default function CustomDialog(props) {
       }}>
       <DialogTitle>
         <span style={{flex:1, textAlign:'center'}}>{title}</span>
-        {style === feedDetail && <a href='javascript:;' onClick={postFeed} style={feedATag}>공유하기</a>}
+        {style === feedDetail && <a href='#' onClick={postFeed} style={feedATag}>공유하기</a>}
         </DialogTitle>
       {style === addImageDialog && 
       <SelectImage fileImages={fileImages} setFileImages={setFileImages} />}

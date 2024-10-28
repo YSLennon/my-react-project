@@ -13,6 +13,14 @@ const reducer = (state, action) => {
     }
 }
 const ImageViewer = (props) => {
+    const style = props.style?props.style:{
+        width: '500px',
+        height: '500px',
+        position: 'relative',
+        background: '#eee',
+        overflow: 'hidden',
+        cursor: 'pointer'
+    }
     const index = useRef(0);
     const [state, stateDispatch] = useReducer(reducer, initialState);
     const fileImages = props.fileImages;
@@ -26,10 +34,14 @@ const ImageViewer = (props) => {
             index.current = Math.min(Math.max((previewIndex+numb), 0),fileImages.length-1);
             stateDispatch({type:'idx', value:index.current})    
         }
-        const reader = new FileReader();
-        reader.readAsDataURL(fileImages[index.current]);
-        reader.onloadend = () => {
-            stateDispatch({type:'prv', value:reader.result})
+        if(props.type !== 'feed'){
+            const reader = new FileReader();
+            reader.readAsDataURL(fileImages[index.current]);
+            reader.onloadend = () => {
+                stateDispatch({type:'prv', value:reader.result})
+            }
+        } else {
+            stateDispatch({type:'prv', value:fileImages[index.current][2]});
         }
     }
     useEffect(() => {
@@ -39,14 +51,7 @@ const ImageViewer = (props) => {
     }, [fileImages])
 
     return (
-        <div style={{
-            width: '500px',
-            height: '500px',
-            position: 'relative',
-            background: '#eee',
-            overflow: 'hidden',
-            cursor: 'pointer'
-        }}>
+        <div style={style}>
             <img 
                 style={{
                     position: 'absolute',
@@ -55,7 +60,7 @@ const ImageViewer = (props) => {
                     width: '100%',
                     transform: 'translate(-50%, -50%)',
                 }}
-                src={preview ? preview : `${PROFILE_PATH}iu_profile.jpg`}
+                src={ preview ? preview : `${PROFILE_PATH}iu_profile.jpg`}
                 alt='이미지'
             />
             <img 

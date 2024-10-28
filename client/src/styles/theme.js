@@ -96,6 +96,15 @@ const theme = (mode) => createTheme({
         },
       },
     },
+    MuiAvatar: {
+      styleOverrides: {
+        root: {
+          width: '70px',
+          height: '70px',
+          display: 'inline-block',
+        },
+      },
+    },
   },
 });
 

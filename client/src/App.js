@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import Page from './pages/Page.js';
 import { store } from './store/store.js';
 import CustomPopup from './components/popup/CustomPopup.js';
+import CustomDialog from './pages/Dialog.js';
 
 
 const ariaLabel = { 'aria-label': 'description' };
@@ -14,7 +15,10 @@ function App() {
     <Provider store={store}>
       <ThemeProvider theme={theme('light')}>
         <Page />
+
+        
         <CustomPopup />
+        <CustomDialog />
 
       </ThemeProvider>
     </Provider>

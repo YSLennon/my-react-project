@@ -9,9 +9,9 @@ const authJWT = (req, res, next) => {
 
         const result = verify(token);
         if(result.success){
-            req.id = result.id;
-            req.name = result.name;
-            req.phone = result.phone;
+            req.params.id = result.id;
+            req.params.name = result.name;
+            req.params.phone = result.phone;
             next();
         } else {
             res.status(401).json({

@@ -1,10 +1,14 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import FlexContainer from '../layout/FlexContainer';
 import { feedText } from '../../styles/styleDialog';
 
 const FeedText = (props) => {
     const textRef = props.textRef;
-
+    useEffect(() => {
+        textRef.current = '';
+    },[])
+    
+    const [txt, setTxt] = useState('');
     return (
         <FlexContainer style={feedText}>
             
@@ -19,7 +23,9 @@ const FeedText = (props) => {
         onChange={(e) => {
             textRef.current = e.target.value
             console.log(textRef.current)
+            setTxt(e.target.value);
         }}
+        value={textRef.current?textRef.current:''}
         style={{
         flex: '1',
         fontSize:'16px',
@@ -30,7 +36,7 @@ const FeedText = (props) => {
         padding: '12px', // 안쪽 여백
         // resize: 'none', // 크기 조절 비활성화
         outline: 'none' // 포커스 시 테두리 강조 비활성화
-    }}>글 작성 영역</textarea>
+    }}></textarea>
         </FlexContainer>
     );
 };

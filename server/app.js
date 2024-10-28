@@ -8,6 +8,7 @@ const getConnection = require('./db');
 const getRedisClient = require("./utils/redis");
 const basePath = './route/'
 const cookieParser = require('cookie-parser');
+const { FEED_PATH } = require("./constants/path");
 const app = express();
 const startServer = async () => {
     app.set('port', process.env.PORT || 3100);
@@ -24,12 +25,14 @@ const startServer = async () => {
         credentials: true, // 쿠키를 허용
     }));
     
+
     app.use('/user', require(basePath+'user'));
     app.use('/feed', require(basePath+'feed'));
     app.use('/refresh', require(basePath+'refresh'));
     app.use('/test', require(basePath+'test'));
     
-    
+    app.use('/uploads', express.static('./storage/feed/'));
+
     // 배포 시 빌드파일 읽을 때 쓴다고 했던듯? 코딩애플 react-express 참고!
     // app.use(express.static(path.join(__dirname, '../client/build')));
     // app.get('/', (req, res) => {

@@ -44,7 +44,7 @@ export default function SideMenu() {
       <Box sx={{ width: 'fit-content', display:'flex' }}>
         <span style={sideMenuStyle}>
           <Stack >
-          {['icon_home.png', 'icon_search.png', 'icon_explorer.png', 'icon_favorite.png','icon_add_circle.png', 'icon_logout.png'].map(item => (
+          {['icon_home.png', 'icon_search.png', 'icon_explore.png', 'icon_favorite.png','icon_add_circle.png', 'icon_logout.png'].map(item => (
             <ToolTip title={item.replace('icon_', '').replace('.png', '')} key={item}>
               <IconButton 
                 onClick={() => {

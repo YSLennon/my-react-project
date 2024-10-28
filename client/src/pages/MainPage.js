@@ -19,11 +19,14 @@ import { FEED_URL } from '../constants/path.js';
 import { useDispatch } from 'react-redux';
 import { popupSlice, handleOpen, handleClose } from '../store/slices/popupSlice';
 import { useNavigate } from 'react-router-dom';
+import FeedList from '../components/container/FeedList.js';
 const MainPage = () => {
-    const [value, setValue] = useState(null);
+    const [flg, setFlg] = useState(true);
     const token = sessionStorage.getItem('token')
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [images, setImages] = useState([]);
+    const [feeds, setFeeds] = useState([]);
 
     let isLogin = async () => {
         try{
@@ -31,6 +34,9 @@ const MainPage = () => {
             headers: { token },
             withCredentials: true,
         });
+        setImages(result.data.images);
+        setFeeds(result.data.feedList);
+        
     }
     catch(e){
         dispatch(handleOpen(e.response.data.message));
@@ -40,10 +46,12 @@ const MainPage = () => {
         },2000)
         
     }};
+    useEffect(() => {
+    }, [images])
+    useEffect(() => {
         isLogin();
 
-    useEffect(() => {
-    }, [])
+    }, [flg])
 
     return (
         <>
@@ -52,20 +60,30 @@ const MainPage = () => {
 
             </FixedContainer>
             <FlexContainer style={styleMain}>
-            {/* <MiniDrawer /> */}
-            <CustomBadge/>
-            {/* <StudyRedux/> */}
-            <CustomDialog />
-            <CustomButton text="Button" onclick={()=>{alert('hi')}}/>
-            <SearchBox ></SearchBox>
-            <Divider />
+                
+                {feeds.map((feed) => {
+                    return <FeedList key={feed.feedNo} feed={feed} images={images[feed.feedNo]} />
+                })}
 
-            <MyAvatar alt="a" src="iu_profile.jpg" />
-            <ChessImageList/>
-
+                {/* {images.map((image, index) => (
+                    <img key={index} src={image} alt={`Uploaded ${index}`} style={{ width: '100px', margin: '10px' }} />
+                ))} */}
+                {/* {images.map((image, index) => (
+                    <img key={index} src={image[0][2]} alt={`Uploaded ${index}`} style={{ width: '100px', margin: '10px' }} />
+                ))} */}
             </FlexContainer>
         </>
     );
 };
 
 export default MainPage;
+
+//  {/* <MiniDrawer /> */}
+//  <CustomBadge/>
+//  {/* <StudyRedux/> */}
+//  <CustomButton text="Button" onclick={()=>{alert('hi')}}/>
+//  <SearchBox ></SearchBox>
+//  <Divider />
+
+//  <ChessImageList/>
+ 
