@@ -12,7 +12,7 @@ module.exports = {
             name: user.name,
             phone: user.phone,
         }
-        return jwt.sign(payload, JWT_KEY, { expiresIn:'10s'});
+        return jwt.sign(payload, JWT_KEY, { expiresIn:'30m'});
     },
     verify: (token) => {
         let decoded = null;
