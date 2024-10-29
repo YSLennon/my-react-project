@@ -71,7 +71,8 @@ const theme = (mode) => createTheme({
         root: {
           width: '100%',
           height: '100%',
-          fontSize: '16px'
+          fontSize: '16px',
+          overflowY: 'hidden',
         },
       },
     },
@@ -83,7 +84,8 @@ const theme = (mode) => createTheme({
           fontSize: '18px',
           fontWeight: 'bold',
           opacity: '0.95',
-          padding:'5px 15px'
+          padding:'5px 15px',
+          height: '25px',
         },
       },
     },
@@ -92,7 +94,8 @@ const theme = (mode) => createTheme({
         root: {
           width: '100%',
           height: '100%',
-          fontSize: '16px'
+          fontSize: '16px',
+          overflowY: 'hidden',
         },
       },
     },

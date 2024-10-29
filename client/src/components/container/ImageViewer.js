@@ -13,17 +13,9 @@ const reducer = (state, action) => {
     }
 }
 const ImageViewer = (props) => {
-    const style = props.style?props.style:{
-        width: '500px',
-        height: '500px',
-        position: 'relative',
-        background: '#eee',
-        overflow: 'hidden',
-        cursor: 'pointer'
-    }
     const index = useRef(0);
     const [state, stateDispatch] = useReducer(reducer, initialState);
-    const fileImages = props.fileImages;
+    const fileImages =  (props.type === 'feedDialog')? props.feedImages : props.fileImages;
     const { preview, previewIndex } = state;
 
     const changeImage = (numb) => {
@@ -34,7 +26,7 @@ const ImageViewer = (props) => {
             index.current = Math.min(Math.max((previewIndex+numb), 0),fileImages.length-1);
             stateDispatch({type:'idx', value:index.current})    
         }
-        if(props.type !== 'feed'){
+        if(props.type !== 'feed' && props.type !== 'feedDialog'){
             const reader = new FileReader();
             reader.readAsDataURL(fileImages[index.current]);
             reader.onloadend = () => {
@@ -45,13 +37,16 @@ const ImageViewer = (props) => {
         }
     }
     useEffect(() => {
+        // alert(state.preview)
+    }, [state])
+    useEffect(() => {
         if (fileImages && fileImages.length > 0) {
             changeImage(0);
         }
     }, [fileImages])
 
     return (
-        <div style={style}>
+        <div style={props.style?props.style:style}>
             <img 
                 style={{
                     position: 'absolute',
@@ -68,10 +63,15 @@ const ImageViewer = (props) => {
                     position: 'absolute',
                     top: '50%',
                     right: '0',
-                    transform: 'translateY(-50%)'
+                    transform: 'translateY(-50%)',
+                    zIndex:20,
+                    padding:'10px',
                 }}
                 src={`${ICON_Path}icon_right.png`}
-                onClick={()=>changeImage(1)}
+                onClick={ (e) => {
+                    e.stopPropagation();
+                    changeImage(1)}
+                }
                 alt='오른쪽 버튼'
             />
             <img 
@@ -79,9 +79,14 @@ const ImageViewer = (props) => {
                     position: 'absolute',
                     top: '50%',
                     left: '0',
-                    transform: 'translateY(-50%)'
+                    transform: 'translateY(-50%)',
+                    zIndex:20,
+                    padding:'10px',
                 }}
-                onClick={()=>changeImage(-1)}
+                onClick={ (e) => {
+                    e.stopPropagation();
+                    changeImage(-1)}
+                }
                 src={`${ICON_Path}icon_left.png`}
                 alt='왼쪽 버튼'
             />
@@ -89,4 +94,12 @@ const ImageViewer = (props) => {
     );
 };
 
+const style = {
+    width: '100%',
+    height: '100%',
+    position: 'relative',
+    background: '#eee',
+    overflow: 'hidden',
+    cursor: 'pointer'
+}
 export default ImageViewer;

@@ -4,6 +4,7 @@ import MainPage from './MainPage';
 import JoinPage from './JoinPage';
 import LoginPage from './LoginPage';
 import TestPage from './TestPage';
+import ProfilePage from './ProfilePage';
 
 
 const Page = () => {
@@ -16,7 +17,10 @@ const Page = () => {
                 <Route path='/intro' element={<LoginPage />} />
                 <Route path='/main' element={<MainPage />} />
                 <Route path='/join' element={<JoinPage />} />
+                <Route path='/profile/' element={<ProfilePage />} />
                 <Route path='/test' element={<TestPage />} />
+
+                
             </Routes>
         </Router>
     );

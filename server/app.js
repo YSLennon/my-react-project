@@ -28,6 +28,8 @@ const startServer = async () => {
 
     app.use('/user', require(basePath+'user'));
     app.use('/feed', require(basePath+'feed'));
+    app.use('/favorite', require(basePath+'favorite'));
+    app.use('/follow', require(basePath+'follow'));
     app.use('/refresh', require(basePath+'refresh'));
     app.use('/test', require(basePath+'test'));
     

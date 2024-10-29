@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import ToolTip from '../components/container/ToolTip';
 import { ICON_Path, USER_URL } from '../constants/path';
-import { IconButton, Stack } from '@mui/material';
+import { Divider, IconButton, Stack } from '@mui/material';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -39,16 +39,20 @@ export default function SideMenu() {
       
     }
   }
+  // , 'icon_favorite.png' -> 하고싶으면 추가해
   return (
     <>
-      <Box sx={{ width: 'fit-content', display:'flex' }}>
+      <Box sx={{ width: 'fit-content', display:'flex', height:'100%' }}>
         <span style={sideMenuStyle}>
-          <Stack >
-          {['icon_home.png', 'icon_search.png', 'icon_explore.png', 'icon_favorite.png','icon_add_circle.png', 'icon_logout.png'].map(item => (
-            <ToolTip title={item.replace('icon_', '').replace('.png', '')} key={item}>
+          <Stack sx={{padding:'10px 10px', background:'#eee', height:'100%'}}>
+          {['icon_logo.png', 'icon_home.png', 'icon_search.png', 'icon_explore.png','icon_add_circle.png', 'icon_logout.png'].map(item => (
+            <ToolTip title={
+              item === 'icon_logo.png'? 'Duxtagram'
+              : item.replace('icon_', '').replace('.png', '')
+              } key={item}>
               <IconButton 
                 onClick={() => {
-                  if(item === 'icon_home.png'){
+                  if(item === 'icon_home.png' || item === 'icon_logo.png'){
                     navigate('/main');
                     return;
                   } else if(item === 'icon_logout.png'){
@@ -70,9 +74,11 @@ export default function SideMenu() {
         </Stack>
         </span>
         {/* sx={{ width: '100%', display: 'inline-block', flex: '1', transition: 'height 0.3s ease' }} */}
-      <Collapse orientation="horizontal" in={checked} sx={{ display:'inline-block', flex:'1'}}>
-        <Box sx={{ width: '300px',height:'600px', background: '#222', display:'block', opacity:'0.5' }}>
-            dd
+      <Collapse orientation="horizontal" in={checked} sx={{ display:'inline-block', flex:'1',}}>
+        <Box sx={{ width: '300px',height:'100%', background: '#aaa', display:'block', opacity:'0.5', color:'white', padding: '10px' }}>
+            
+          {/* <SearchBox ></SearchBox> */}
+          <Divider />
         </Box>
       </Collapse>
       </Box>

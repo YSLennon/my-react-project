@@ -21,6 +21,7 @@ import FeedDetail from '../components/container/FeedDetail';
 import axiosInstance from '../services/authAxios';
 import { FEED_URL } from '../constants/path';
 import { handleOpen } from '../store/slices/popupSlice';
+import { handleRender } from '../store/slices/renderSlice';
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];
  
@@ -42,15 +43,16 @@ export default function CustomDialog(props) {
   const textRef=useRef('');
   const id = sessionStorage.getItem('id');
   const token = sessionStorage.getItem('token');
-  const { open, title, style } = useSelector((state) => state.dialog);
+  const { open, title, style, comments } = useSelector((state) => state.dialog);
   const dispatch = useDispatch();
+  const render = useSelector((state) => state.render.value)
+
   useEffect(() => {
     if (style === feedDetail) {
         // FeedDetail이 렌더링될 때 fileImages를 확인
         setFileImages([...fileImages]);
     }
 }, [style]); // style 또는 fileImages가 변경될 때마다 실행
-
   const handleClose = () => {
     // onClose(selectedValue);
     dispatch(handleDialogClose());
@@ -60,11 +62,12 @@ export default function CustomDialog(props) {
   const postFeed = async () => {
     const formData = new FormData();
     formData.append('text', textRef.current);
+    formData.append('id', sessionStorage.getItem('id'));
     fileImages.forEach((file) => {
         formData.append('uploaded_files', file, encodeURIComponent(file.name));
     });
     try {
-        const res = await axiosInstance.post(FEED_URL+id, formData, {
+        const res = await axiosInstance.post(FEED_URL, formData, {
             headers: {
                 token,
                 withCredentials: true,
@@ -77,6 +80,7 @@ export default function CustomDialog(props) {
           textRef.current = '';
           setFileImages([]);
           dispatch(handleDialogClose());
+          dispatch(handleRender());
         }
         
     } catch (error) {
@@ -93,10 +97,13 @@ export default function CustomDialog(props) {
       onClose={handleClose} open={open} PaperProps={{
         sx: style
       }}>
-      <DialogTitle>
-        <span style={{flex:1, textAlign:'center'}}>{title}</span>
-        {style === feedDetail && <a href='#' onClick={postFeed} style={feedATag}>공유하기</a>}
-        </DialogTitle>
+        {
+          title != 'feedDialog' &&
+          <DialogTitle>
+            <span style={{flex:1, textAlign:'center'}}>{title}</span>
+            {style === feedDetail && <a href='#' onClick={postFeed} style={feedATag}>공유하기</a>}
+            </DialogTitle>
+        }
       {style === addImageDialog && 
       <SelectImage fileImages={fileImages} setFileImages={setFileImages} />}
       {style === feedDetail && 
@@ -104,29 +111,3 @@ export default function CustomDialog(props) {
     </Dialog>
   );
 }
-
-// export default function CustomDialog(props) {
-//   const [selectedValue, setSelectedValue] = React.useState(emails[1]);
-
-//   const handleClose = (value) => {
-//     // setSelectedValue(value);
-//   };
-
-//   return (
-//     <div>
-//       {/* <Typography variant="subtitle1" component="div">
-//         Selected: {selectedValue}
-//       </Typography>
-//       <br />
-//       <Button variant="outlined" onClick={handleClickOpen}>
-//         Open simple dialog
-//       </Button> */}
-//       <SimpleDialog
-//         // selectedValue={selectedValue}
-//         // open={open}
-//         // onClose={handleClose}
-//       >
-//         </SimpleDialog>
-//     </div>
-//   );
-// }

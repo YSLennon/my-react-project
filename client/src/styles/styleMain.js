@@ -1,5 +1,4 @@
 export const styleMain ={
-    margin: '20px',
-    marginLeft: '70px',
+    margin: '0px 20px 0px 70px',
     flexDirection: 'column'
 }

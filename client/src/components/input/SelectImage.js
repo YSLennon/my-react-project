@@ -8,10 +8,13 @@ import { handleDialogOpen } from '../../store/slices/dialogSlice';
 import { feedDetail } from '../../styles/styleDialog';
 
 const SelectImage = (props) => {
+
+
     const style = {
         width: 'fit-content',
         padding: '10px 20px', 
-        margin: 'auto'
+        margin: 'auto',
+        hegiht: 'calc( 100% - 35px )',
         };
     const inputFiles = useRef();
     const dispatch = useDispatch('');

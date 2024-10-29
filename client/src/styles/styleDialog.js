@@ -24,6 +24,7 @@ export const addImageDialog = {
   };
   export const feedText = {
     flexDirection: 'column',
-    height:'100%'
+    height:'100%',
+    maxWidth:'700px',
 
   };
