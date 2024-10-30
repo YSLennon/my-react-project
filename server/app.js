@@ -28,12 +28,14 @@ const startServer = async () => {
 
     app.use('/user', require(basePath+'user'));
     app.use('/feed', require(basePath+'feed'));
+    app.use('/profile', require(basePath+'profile'));
     app.use('/favorite', require(basePath+'favorite'));
     app.use('/follow', require(basePath+'follow'));
     app.use('/refresh', require(basePath+'refresh'));
     app.use('/test', require(basePath+'test'));
     
     app.use('/uploads', express.static('./storage/feed/'));
+    app.use('/uploadsProfile', express.static('./storage/profile/'));
 
     // 배포 시 빌드파일 읽을 때 쓴다고 했던듯? 코딩애플 react-express 참고!
     // app.use(express.static(path.join(__dirname, '../client/build')));

@@ -39,24 +39,21 @@ const LoginPage = () => {
         if(user.id === '' || user.id === null || user.id === undefined){
             userDispatch({type: 'ID', value:'invalid Id'});
         }
-        console.log(res)
         if(res.data.success){
             const user = decode(res.data.accessToken);
             sessionStorage.setItem('token', res.data.accessToken);
             sessionStorage.setItem('id', user.id);
             sessionStorage.setItem('name', user.name);
             sessionStorage.setItem('phone', user.phone);
-            
+            const id = sessionStorage.getItem('id');
             const token = res.data.accessToken;
             const result = await axios.get(FEED_URL, {
                 withCredentials: true,
                 headers:{token},
             })
-            console.log(result)
 
-            navigate('/main')
+            navigate(`/main?explore=${id}`)
         } else {        
-            console.log('hi')
 
             disaptch(handleOpen(res.data.message));
             if(res.data.type === 'id'){

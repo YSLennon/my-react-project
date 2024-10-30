@@ -8,6 +8,7 @@ const initialState = {
     feed: null,
     comments: null,
     images: null,
+    onclick: null,
 
 }
 export const dialogSlice = createSlice({
@@ -22,6 +23,7 @@ export const dialogSlice = createSlice({
             state.feed = action.payload.feed;
             state.comments = action.payload.comments;
             state.images = action.payload.images;
+            state.onclick = action.payload.onclick;
         },
         handleAddComment: (state, action) => {
             state.comments = action.payload;

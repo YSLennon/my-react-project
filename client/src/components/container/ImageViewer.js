@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useRef } from 'react';
-import { ICON_Path, PROFILE_PATH } from '../../constants/path';
+import { ICON_Path, IMG_PATH, PROFILE_PATH } from '../../constants/path';
 const initialState = {
     preview: null,
     previewIndex: 0,
@@ -55,7 +55,7 @@ const ImageViewer = (props) => {
                     width: '100%',
                     transform: 'translate(-50%, -50%)',
                 }}
-                src={ preview ? preview : `${PROFILE_PATH}iu_profile.jpg`}
+                src={ preview ? preview : `${IMG_PATH}skeleton.png`}
                 alt='이미지'
             />
             <img 

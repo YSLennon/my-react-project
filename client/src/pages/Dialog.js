@@ -15,13 +15,14 @@ import Typography from '@mui/material/Typography';
 import { blue } from '@mui/material/colors';
 import {Provider, useSelector, useDispatch, connect} from 'react-redux';
 import { handleDialogClose, afterClose, handleDialogOpen } from '../store/slices/dialogSlice';
-import { addImageDialog, feedATag, feedDetail } from '../styles/styleDialog';
+import { addImageDialog, feedATag, feedDetail, menuDialog, } from '../styles/styleDialog';
 import SelectImage from '../components/input/SelectImage';
 import FeedDetail from '../components/container/FeedDetail';
 import axiosInstance from '../services/authAxios';
 import { FEED_URL } from '../constants/path';
 import { handleOpen } from '../store/slices/popupSlice';
 import { handleRender } from '../store/slices/renderSlice';
+import MenuBox from '../components/container/MenuBox';
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];
  
@@ -43,7 +44,7 @@ export default function CustomDialog(props) {
   const textRef=useRef('');
   const id = sessionStorage.getItem('id');
   const token = sessionStorage.getItem('token');
-  const { open, title, style, comments } = useSelector((state) => state.dialog);
+  const { open, title, style, comments, onclick, feed, type, } = useSelector((state) => state.dialog);
   const dispatch = useDispatch();
   const render = useSelector((state) => state.render.value)
 
@@ -98,16 +99,20 @@ export default function CustomDialog(props) {
         sx: style
       }}>
         {
-          title != 'feedDialog' &&
+          title != 'feedDialog' && style != menuDialog &&
           <DialogTitle>
             <span style={{flex:1, textAlign:'center'}}>{title}</span>
             {style === feedDetail && <a href='#' onClick={postFeed} style={feedATag}>공유하기</a>}
             </DialogTitle>
         }
       {style === addImageDialog && 
-      <SelectImage fileImages={fileImages} setFileImages={setFileImages} />}
+      <SelectImage fileImages={fileImages} setFileImages={setFileImages} type={type} />}
       {style === feedDetail && 
       <FeedDetail fileImages={fileImages} textRef={textRef}/>}
+      {style === menuDialog && 
+      <MenuBox onclick={onclick} feed={feed} images={fileImages} comments={comments} />}
+      
+
     </Dialog>
   );
 }

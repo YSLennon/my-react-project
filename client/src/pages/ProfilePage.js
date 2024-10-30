@@ -1,5 +1,5 @@
 
-import { Avatar, Divider, Input, TextField } from '@mui/material';
+import { Avatar, Divider, IconButton, Input, TextField } from '@mui/material';
 import ChessImageList from '../components/container/ImageList.js';
 import SideMenu from './LeftMenu.js';
 import FixedContainer from '../components/layout/FixedContainer.js';
@@ -8,12 +8,14 @@ import { styleSide } from '../styles/styleSide.js';
 import React, { useEffect, useRef, useState } from 'react';
 import FlexContainer from '../components/layout/FlexContainer.js';
 import axiosInstance from '../services/authAxios.js'
-import { FEED_URL, FOLLOW_URL, ICON_Path, PROFILE_PATH } from '../constants/path.js';
+import { FEED_URL, FOLLOW_URL, ICON_Path, PROFILE_PATH, PROFILE_URL } from '../constants/path.js';
 import { handleOpen, handleClose } from '../store/slices/popupSlice.js';
 import { handleRender } from '../store/slices/renderSlice.js';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import CustomButton from '../components/button/Button.js'
+import { handleDialogOpen } from '../store/slices/dialogSlice.js';
+import { addImageDialog } from '../styles/styleDialog.js';
 const token = sessionStorage.getItem('token')
 
 const ProfilePage = () => {
@@ -31,9 +33,10 @@ const ProfilePage = () => {
     const [isFollowed, setFollowed] = useState(0);
     const [follower, setFollower] = useState(0);
     const [following, setFollowing] = useState(0);
-
+    const [ profileImage,setProfileImage ] = useState(null);
     let isLogin = async () => {
         try{
+        await readProfile();
         const result = await axiosInstance.get(FEED_URL+profileId, {
             headers: { token },
             withCredentials: true,
@@ -64,12 +67,32 @@ const ProfilePage = () => {
         },2000)
         console.log(e)
     }};
-    useEffect(() => {
-    }, [images])
+
     useEffect(() => {
         isLogin();
-
     }, [render])
+
+
+    const readProfile = async () => {
+        const uid = sessionStorage.getItem('id')
+        try {
+            const res = await axiosInstance.get(PROFILE_URL+uid,{
+                headers: {
+                    token,
+                    withCredentials: true,
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            console.log(res);
+            if(res.data.success){
+                setProfileImage(res.data.profile);
+            }
+            
+        } catch (error) {
+            console.error('Error uploading files:', error);
+        }
+      }
+
     const follow = async () => {
         const result = await axiosInstance.post(FOLLOW_URL+id, {
             followingId: profileId
@@ -79,6 +102,7 @@ const ProfilePage = () => {
         });
         dispatch(handleRender());
     }
+    
     const unFollow = async () => {
         const result = await axiosInstance.delete(FOLLOW_URL+id, {
             data: {followingId: profileId}
@@ -95,7 +119,14 @@ const ProfilePage = () => {
             </FixedContainer>
             <FlexContainer style={styleMain}>
                 <FlexContainer style={{margin:'50px auto', width: '45vw', minWidth: '800px'}}>
-                    <Avatar alt="profile" src={PROFILE_PATH+"iu_profile.jpg"} sx={{width: '200px', height: '200px'}} />
+                    <IconButton onClick={()=>{
+                        dispatch(handleDialogOpen({style: addImageDialog , title: '프로필 수정', type: 'profile' }));
+                    }}
+                    disabled={profileId !== id}
+                    >
+                        <Avatar alt="profile" src={profileImage? profileImage : PROFILE_PATH+"iu_profile.jpg"} sx={{width: '200px', height: '200px'}} />
+                    </IconButton>
+
                     <FlexContainer style={{flexDirection:'column', flex:1, padding:'0px 30px'}}>
                         <div style={style}>
                             <span style={{margin:'auto 0px'}}>ysha0123</span>

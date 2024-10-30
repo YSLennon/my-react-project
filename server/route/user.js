@@ -62,6 +62,8 @@ router.route('/:id')
             res.json({success: true, message: '로그아웃 되었습니다.'})
         } catch(err){
             res.json({success: false, message: err});
+        } finally {
+            connection.release(); // 반드시 커넥션 반환
         }
     })
     .post( async (req, res) => { // 로그인
@@ -71,7 +73,6 @@ router.route('/:id')
             const query = 'SELECT * FROM TBL_USER WHERE ID = ?'
             const [results] = await connection.query(query,[req.params.id])
             const user = results[0]
-            console.log(results)
 
             if(results.length < 1) {
                 res.json({success: false, type:'id', message: '존재하지 않는 아이디입니다. 아이디를 확인해주세요.'});
@@ -108,6 +109,8 @@ router.route('/:id')
         } catch(err){
             console.log(err);
             res.json({success: false, message: err+123});
+        } finally {
+            connection.release(); // 반드시 커넥션 반환
         }
     })
 

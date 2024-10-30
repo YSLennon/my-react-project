@@ -8,6 +8,7 @@ import { feedDetail } from '../../styles/styleDialog';
 const FeedIconContainer = (props) => {
     const style={
         cursor: 'pointer',
+        marginLeft:'20px',
     }
     const dispatch = useDispatch();
     const viewDetail = () => {
@@ -21,11 +22,11 @@ const FeedIconContainer = (props) => {
     }
     return (
         <FlexContainer>
-            <a style={style} onClick={() => {
+            {/* <a style={style} onClick={() => {
                 
             }}>
                 <img  src={ICON_Path+'icon_favorite.png'} width='40px'/>
-            </a>
+            </a> */}
             
             <a onClick={viewDetail}>
                 <Badge badgeContent={props.comments?props.comments.length:0} color="primary">

@@ -46,7 +46,7 @@ const Comment = (props) => {
                     console.log(props.feedNo)
                 }}
                  value={state} type='text' placeholder='댓글 달기...' />
-                <a href='#' onClick={addComment} style={{padding: '10px', textDecoration:'none', color:'#444'}}>게시</a>
+                <a href='javascript:;' onClick={addComment} style={{padding: '10px', textDecoration:'none', color:'#444'}}>게시</a>
             </FlexContainer>
             <Divider sx={{border: '1px solid #ccc'}} />
         </>

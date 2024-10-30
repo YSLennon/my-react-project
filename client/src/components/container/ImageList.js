@@ -12,7 +12,7 @@ export default function ChessImageList(props) {
   const images = props.images;
   const comments = props.comments;
   return (
-    <ImageList sx={{ margin:'50px auto',overflow:'visible',height:'fit-content', padding:'10px', width: '45vw', minWidth:'800px',}} cols={3}>
+    <ImageList sx={{ margin:'50px auto',overflow:'visible', padding:'10px', width: '45vw', minWidth:'800px',}} cols={3}>
       {feeds.map((feed) => {
             return <ImageListItem key={feed.feedNo} 
                       images={images[feed.feedNo]}
@@ -25,9 +25,9 @@ export default function ChessImageList(props) {
                           images: images[feed.feedNo]
                       }));
                       }}
-                      sx={{padding:'5px', minWidth:'250px', border: '1px solid #ccc', borderRadius: '5px' }}>
+                      sx={{padding:'5px', minWidth:'250px', width: '15vw', minHeight:'250px', border: '1px solid #ccc', borderRadius: '5px' }}>
                       <img
-                        style={{cursor:'pointer'}}
+                        style={{cursor:'pointer', height:'15vw', minHeight:'250px'}}
                         src={images[feed.feedNo][0][2]}
                         alt={images[feed.feedNo][0][0]}
                         loading="lazy"

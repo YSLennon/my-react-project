@@ -3,7 +3,6 @@ import FlexContainer from '../layout/FlexContainer';
 import ProfileContainer from './ProfileContainer';
 import ImageViewer from './ImageViewer';
 import FeedIconContainer from './FeedIconContainer';
-import { Divider } from '@mui/material';
 import { useDispatch } from 'react-redux'
 import { handleDialogOpen } from '../../store/slices/dialogSlice';
 import { feedDetail } from '../../styles/styleDialog';
@@ -24,7 +23,7 @@ const FeedList = (props) => {
     })
     return (
         <FlexContainer style={style}>
-            <ProfileContainer feed={props.feed} />
+            <ProfileContainer feed={props.feed} comments={props.comments} images={props.images} viewDetail={viewDetail} />
             <a onClick={viewDetail}>
                 <ImageViewer fileImages={props.images} type='feed' style={imgStyle} feed={props.feed} comments={props.comments} />
             </a>

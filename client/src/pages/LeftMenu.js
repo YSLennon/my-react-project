@@ -11,6 +11,7 @@ import { handleOpen } from '../store/slices/popupSlice';
 import axios from 'axios';
 import { handleDialogOpen } from '../store/slices/dialogSlice';
 import { addImageDialog } from '../styles/styleDialog';
+import { handleRender } from '../store/slices/renderSlice';
 
 export default function SideMenu() {
   const dispatch = useDispatch();
@@ -47,13 +48,22 @@ export default function SideMenu() {
           <Stack sx={{padding:'10px 10px', background:'#eee', height:'100%'}}>
           {['icon_logo.png', 'icon_home.png', 'icon_search.png', 'icon_explore.png','icon_add_circle.png', 'icon_logout.png'].map(item => (
             <ToolTip title={
-              item === 'icon_logo.png'? 'Duxtagram'
+              item === 'icon_logo.png'? 'Profile'
               : item.replace('icon_', '').replace('.png', '')
               } key={item}>
               <IconButton 
                 onClick={() => {
-                  if(item === 'icon_home.png' || item === 'icon_logo.png'){
+                  if(item === 'icon_logo.png'){
+                    navigate('/profile');
+                    dispatch(handleRender());
+                    return;
+                  } else if(item === 'icon_home.png'){
                     navigate('/main');
+                    dispatch(handleRender());
+                    return;
+                  } else if(item === 'icon_explore.png'){
+                    navigate('/main?feed=explore');
+                    dispatch(handleRender());
                     return;
                   } else if(item === 'icon_logout.png'){
                     logout();

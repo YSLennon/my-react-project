@@ -22,7 +22,9 @@ router.route('/:uid')
         } catch (err){
             console.error(err); // 추가: 에러 로그 출력
             res.json({ success: false, message: 'follow err'});
-        } 
+        } finally {
+            connection.release(); // 반드시 커넥션 반환
+        }
     })
     .post(authJWT, async (req, res) => {
         let query = 'insert into tbl_follow (followerId, followingId) values (?, ?)'
@@ -31,11 +33,12 @@ router.route('/:uid')
             await connection.query(query, [req.params.uid ,req.body.followingId]);
             res.json({ success: true, message: '작성되었습니다.'});
             
-
         } catch (err){
             console.error(err); // 추가: 에러 로그 출력
             res.json({ success: false, message: '게시글 작성에 실패했습니다.'});
-        } 
+        } finally {
+            connection.release(); // 반드시 커넥션 반환
+        }
     })
     .delete(authJWT, async (req, res) => {
         let query = 'delete from tbl_follow where followerId = ? and followingId = ?'
@@ -48,7 +51,9 @@ router.route('/:uid')
         } catch (err){
             console.error(err); // 추가: 에러 로그 출력
             res.json({ success: false, message: '게시글 작성에 실패했습니다.'});
-        } 
+        } finally {
+            connection.release(); // 반드시 커넥션 반환
+        }
     })
 
 module.exports = router;

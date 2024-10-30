@@ -2,21 +2,49 @@ import React, { useEffect, useRef, useState } from 'react';
 import FlexContainer from '../layout/FlexContainer';
 import { feedText } from '../../styles/styleDialog';
 import MyAvatar from '../avatar/Avatar';
-import { ICON_Path, PROFILE_PATH } from '../../constants/path';
+import { FEED_URL, ICON_Path, PROFILE_PATH } from '../../constants/path';
 import { Avatar } from '@mui/material';
 import Comment from './Comment';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import axiosInstance from '../../services/authAxios';
+import { handleOpen } from '../../store/slices/popupSlice';
+import { afterClose, handleAddComment, handleDialogClose } from '../../store/slices/dialogSlice';
+import { handleRender } from '../../store/slices/renderSlice';
 
 const FeedText = (props) => {
-    // title={title} feed={feed} comments={comments}
+    const token = sessionStorage.getItem('token');
+    const dispatch = useDispatch();
     const textRef = props.textRef;
     const id = props.feed? props.feed.id : sessionStorage.getItem('id');
+    const myId = sessionStorage.getItem('id');
     useEffect(() => {
         textRef.current = '';
     },[])
     const [txt, setTxt] = useState('');
     const render = useSelector(state => state.render.value);
     const comments = useSelector(state => state.dialog.comments);
+    const deleteCommnet = async (commentNo) => {
+        try{
+            const result = await axiosInstance.delete(FEED_URL+props.feed.feedNo, {
+                data: {
+                    commentNo
+                },
+                headers: {
+                    token,
+                    withCredentials: true,
+                },});            
+            dispatch(handleAddComment(result.data.comments[props.feed.feedNo]));
+            dispatch(handleOpen(result.data.message))
+        }catch(e){
+            console.log(e);
+        } finally{
+            dispatch(handleRender());
+        }
+
+    }
+    useEffect(() => {
+    },[render])
+
     return (
         <FlexContainer style={feedText}>
             
@@ -57,11 +85,22 @@ const FeedText = (props) => {
                                 </a>
                                 { props.feed && <span style={styleDate}>{ item[3] }</span> }
                                 <span style={{flex: 1}}></span>
-                                {/* {props.feed &&
-                                    <a>
-                                    <img src={ICON_Path+'icon_more_menu.png'} width='20px' height='20px'/>
+                                {props.feed && myId === item[0] &&
+                                    <a
+                                        onClick={() => {
+                                            deleteCommnet(item[4])
+                                        }}
+                                        style={{color: 'red',
+                                            fontSize: '10px',
+                                            fontWeight: 'bold',
+                                            opacity:'0.7',
+                                            padding: '7px 2px',
+                                            textDecoration:'none',
+                                            cursor:'pointer'
+                                            }}>
+                                        삭제
                                     </a>
-                                } */}
+                                }
                             </FlexContainer>
                         )
                     })
@@ -115,7 +154,7 @@ const styleDate = {
     color: 'black',
 }
 const styleContents = {
-    width:'22vw',
+    width:'21vw',
     fontWeight: 'normal',
     padding:'2px',
     fontSize:'13px',

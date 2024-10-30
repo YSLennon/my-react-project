@@ -26,5 +26,12 @@ export const addImageDialog = {
     flexDirection: 'column',
     height:'100%',
     maxWidth:'700px',
-
+  };
+  export const menuDialog = {
+    bgcolor: 'background.default', // 배경색 변경
+    boxShadow: 3, // 그림자 깊이
+    width: '30vw',
+    height: 'fit-content',
+    maxWidth: '400px',
+    minWidth: '300px',
   };

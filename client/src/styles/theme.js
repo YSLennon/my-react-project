@@ -81,7 +81,8 @@ const theme = (mode) => createTheme({
         root: {
           display:'flex',
           background:'#bbb',
-          fontSize: '18px',
+          fontSize: '14px',
+          lineHeight: '16px',
           fontWeight: 'bold',
           opacity: '0.95',
           padding:'5px 15px',

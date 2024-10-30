@@ -51,6 +51,8 @@ router.route('/')
         } catch(err){
             console.log(err);
             return res.json({success: false, message: 'false'})
+        } finally {
+            connection.release(); // 반드시 커넥션 반환
         }
 
 
