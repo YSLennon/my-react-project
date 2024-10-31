@@ -67,8 +67,12 @@ const LoginPage = () => {
     return (
         <>
             <FlexContainer style={styleIntro}>
-                <FlexSubContainer>
-                    <img width='100%' src={PROFILE_PATH+'iu_profile.jpg'} />
+            <FlexSubContainer style={{
+                    overflow:'hidden',
+                    display:'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'}} >
+                    <img height='100%' src={'/logo.png'} />
                 </FlexSubContainer>
                 <FlexSubContainer style={{width:'50%', display:'flex', flexDirection:'column'}}>
                     <img src='./clean_logo.png' style={{margin: '10px auto'}} width='30%'  />

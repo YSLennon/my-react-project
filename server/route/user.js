@@ -11,8 +11,9 @@ const connection = getConnection();
 
 router.route('/')
     .get(async (req, res) => { // 미정
+        const connection = await getConnection();
+
         try{
-            const connection = await getConnection();
             // const {id, pwd, name, phone} = req.body;
             const query = 'SELECT * FROM TBL_USER'
 
@@ -20,12 +21,14 @@ router.route('/')
             res.json({success: true, user: results});
         } catch(err){
             res.json({success: false, message: err});
-
+        } finally {
+            connection.release(); // 반드시 커넥션 반환
         }        
     })
     .post(async (req, res) => { // 회원가입
+        const connection = await getConnection();
+
         try{
-            const connection = await getConnection();
             const {id, pwd, name, phone} = req.body;
             let query = 'SELECT * FROM TBL_USER WHERE ID = ?';
 
@@ -34,7 +37,6 @@ router.route('/')
                 res.json({success: false, message: '이미 가입된 아이디입니다.'})
                 return;
             }
-            
             query = 'INSERT INTO TBL_USER VALUES (?, ?, ?, ?)';
             
             const pwdHash = await bcrypt.hash(pwd,saltRounds);
@@ -45,7 +47,8 @@ router.route('/')
 
         } catch(err){
             res.json({success: false, message: err});
-
+        }finally {
+            connection.release(); // 반드시 커넥션 반환
         }
     })
 router.route('/:id')
@@ -62,13 +65,12 @@ router.route('/:id')
             res.json({success: true, message: '로그아웃 되었습니다.'})
         } catch(err){
             res.json({success: false, message: err});
-        } finally {
-            connection.release(); // 반드시 커넥션 반환
-        }
+        } 
     })
     .post( async (req, res) => { // 로그인
+        const connection = await getConnection();
+
         try{
-            const connection = await getConnection();
             const {pwd} = req.body;
             const query = 'SELECT * FROM TBL_USER WHERE ID = ?'
             const [results] = await connection.query(query,[req.params.id])
