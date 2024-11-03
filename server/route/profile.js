@@ -44,11 +44,14 @@ router.route('/:uid')
             const connection = await getConnection();
 
             try{
-                let query = `SELECT * FROM tbl_file WHERE profileId = ?;`;
+                let query = `SELECT * FROM tbl_file WHERE profileId = ?`;
                 const [[profileImage]] = await connection.query(query, [req.params.uid]);
-                const profile = `${req.protocol}://${req.get('host')}/uploadsProfile/${profileImage.filename}`
-                console.log(profile)
-                res.json({success: true, message: 'new profile', profile});
+                query = `SELECT * FROM tbl_user WHERE id = ?`;
+                const [[user]] = await connection.query(query, [req.params.uid]);
+
+                console.log(user);
+                const profile = profileImage?`${req.protocol}://${req.get('host')}/uploadsProfile/${profileImage.filename}`:null;
+                res.json({success: true, message: 'new profile', profile, profileId:user.id, profileName: user.name});
 
             } catch(e){
                 console.log(e);

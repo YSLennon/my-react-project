@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import MainPage from './MainPage';
 import JoinPage from './JoinPage';
 import LoginPage from './LoginPage';
-import TestPage from './TestPage';
 import ProfilePage from './ProfilePage';
 
 
@@ -18,7 +17,6 @@ const Page = () => {
                 <Route path='/main' element={<MainPage />} />
                 <Route path='/join' element={<JoinPage />} />
                 <Route path='/profile/' element={<ProfilePage />} />
-                <Route path='/test' element={<TestPage />} />
 
                 
             </Routes>

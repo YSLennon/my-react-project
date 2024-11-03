@@ -32,7 +32,6 @@ const startServer = async () => {
     app.use('/favorite', require(basePath+'favorite'));
     app.use('/follow', require(basePath+'follow'));
     app.use('/refresh', require(basePath+'refresh'));
-    app.use('/test', require(basePath+'test'));
     
     app.use('/uploads', express.static('./storage/feed/'));
     app.use('/uploadsProfile', express.static('./storage/profile/'));
@@ -45,7 +44,7 @@ const startServer = async () => {
     
     
     app.listen(app.get('port'), () => {
-        console.log(app.get('port'), '번 포트에서 대기 중, multer, bcrypt, jsonwebtoken 다시 받았으니까 확인해보기');
+        console.log(app.get('port'), '번 포트에서 대기 중');
     }); 
 }
 startServer();

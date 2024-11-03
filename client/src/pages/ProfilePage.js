@@ -30,6 +30,7 @@ const ProfilePage = () => {
     const searchParams = new URLSearchParams(location.search);
     const profileId = searchParams.get('id')? searchParams.get('id') : sessionStorage.getItem('id')
     const id = sessionStorage.getItem('id');
+    const [name, setName] = useState('');
     const [isFollowed, setFollowed] = useState(0);
     const [follower, setFollower] = useState(0);
     const [following, setFollowing] = useState(0);
@@ -74,18 +75,17 @@ const ProfilePage = () => {
 
 
     const readProfile = async () => {
-        const uid = sessionStorage.getItem('id')
         try {
-            const res = await axiosInstance.get(PROFILE_URL+uid,{
+            const res = await axiosInstance.get(PROFILE_URL+profileId,{
                 headers: {
                     token,
                     withCredentials: true,
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            console.log(res);
             if(res.data.success){
                 setProfileImage(res.data.profile);
+                setName(res.data.profileName);
             }
             
         } catch (error) {
@@ -129,7 +129,7 @@ const ProfilePage = () => {
 
                     <FlexContainer style={{flexDirection:'column', flex:1, padding:'0px 30px'}}>
                         <div style={style}>
-                            <span style={{margin:'auto 0px'}}>ysha0123</span>
+                            <span style={{margin:'auto 0px'}}>{profileId}</span>
                             <span style={{flex:1}}> </span>
                             {
                                 profileId !== id && (
@@ -145,7 +145,7 @@ const ProfilePage = () => {
                             <span style={styleDate}>팔로우 {following.length}</span>
                         </div>
                         <div style={style}>
-                            <span style={{opacity:0.8, fontSize: '14px',}}>하유성</span>
+                            <span style={{opacity:0.8, fontSize: '14px',}}>{name}</span>
                         </div>
                     </FlexContainer>
                     <img src={ICON_Path+'icon_more_menu.png'} style={{marginBottom:'auto'}} width='40px' />

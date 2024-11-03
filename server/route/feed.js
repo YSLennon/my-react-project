@@ -41,8 +41,6 @@ router.route('/')
             if(feedList.length !== 0){
                 feedList.forEach(item => item.profile = item.profile?`${req.protocol}://${req.get('host')}/uploadsProfile/${item.profile}`:null);
             }
-            console.log(11111)
-            console.log(feedList.length)
     
             let images;
             if(fileList.length !== 0){
