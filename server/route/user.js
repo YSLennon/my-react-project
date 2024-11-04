@@ -15,7 +15,7 @@ router.route('/')
 
         try{
             // const {id, pwd, name, phone} = req.body;
-            const query = 'SELECT * FROM TBL_USER'
+            const query = 'SELECT * FROM tbl_user'
 
             const [results] = await connection.query(query)
             res.json({success: true, user: results});
@@ -30,14 +30,15 @@ router.route('/')
 
         try{
             const {id, pwd, name, phone} = req.body;
-            let query = 'SELECT * FROM TBL_USER WHERE ID = ?';
+            let query = 'SELECT * FROM tbl_user WHERE ID = ?';
+            
 
             const [results] = await connection.query(query, [id])
             if(results.length > 0){
                 res.json({success: false, message: '이미 가입된 아이디입니다.'})
                 return;
             }
-            query = 'INSERT INTO TBL_USER VALUES (?, ?, ?, ?)';
+            query = 'INSERT INTO tbl_user VALUES (?, ?, ?, ?)';
             
             const pwdHash = await bcrypt.hash(pwd,saltRounds);
             console.log('hashPwd: ',pwdHash);
@@ -72,8 +73,10 @@ router.route('/:id')
 
         try{
             const {pwd} = req.body;
-            const query = 'SELECT * FROM TBL_USER WHERE ID = ?'
+            const query = 'SELECT * FROM tbl_user WHERE ID = ?'
             const [results] = await connection.query(query,[req.params.id])
+            console.log(results);
+
             const user = results[0]
 
             if(results.length < 1) {

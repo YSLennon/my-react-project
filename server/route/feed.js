@@ -30,14 +30,13 @@ router.route('/')
              : `SELECT distinct feedNo, f.id, text, name, DATE_FORMAT(createdAt, '%m월%d일') AS createdAt, filename as profile FROM tbl_feed f inner join tbl_user u on f.id = u.id INNER JOIN tbl_follow fo ON f.id = fo.followingId left JOIN tbl_file fi ON f.id = fi.profileId WHERE fo.followerId = '${req.headers.feed}' || f.id = '${req.headers.feed}' order by feedNo DESC`;
             const [feedList] = await connection.query(query);
             query = isExplore? `SELECT boardNo, c.id, content, DATE_FORMAT(c.createdAt, '%m월%d일') AS createdAt, u.name, commentNo from tbl_comment c INNER JOIN tbl_feed f on c.boardno = f.feedNo inner join tbl_user u on c.id = u.id order BY c.commentNo`
-             : `SELECT * from tbl_comment c INNER JOIN tbl_feed f on c.boardno = f.feedNo inner join tbl_user u on c.id = u.id INNER JOIN tbl_follow fo ON f.id = fo.followingId WHERE followerId ='${req.headers.feed}' || f.id = '${req.headers.feed}' order BY c.commentNo`
+             : `SELECT DISTINCT boardNo, c.id, content, DATE_FORMAT(c.createdAt, '%m월%d일') AS createdAt, u.name, commentNo from tbl_comment c INNER JOIN tbl_feed f on c.boardno = f.feedNo inner join tbl_user u on c.id = u.id INNER JOIN tbl_follow fo ON f.id = fo.followingId WHERE followerId ='${req.headers.feed}' || f.id = '${req.headers.feed}' order BY c.commentNo`
             const [commentList] = await connection.query(query);
+            console.log(commentList.length)
             query = isExplore? 'select * from tbl_file order by fileNo desc'
              : `select * from tbl_file f INNER JOIN tbl_feed fe ON f.boardNo = fe.feedNo inner JOIN tbl_follow on fe.id = followingId WHERE followerId = '${req.headers.feed}' || fe.id = '${req.headers.feed}'  order by fileNo desc`;
             const [fileList] = await connection.query(query);
     
-            
-            console.log(feedList.length)
             if(feedList.length !== 0){
                 feedList.forEach(item => item.profile = item.profile?`${req.protocol}://${req.get('host')}/uploadsProfile/${item.profile}`:null);
             }

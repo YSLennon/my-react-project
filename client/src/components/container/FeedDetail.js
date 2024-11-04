@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux'
 
 export default function FeedDetail(props) {
   const { title, images, comments, feed } = useSelector((state) => state.dialog);
-
   const style = {
     hegiht: 'calc( 100% - 35px )',
     minWidth: '50%',    // 최소 너비 설정
