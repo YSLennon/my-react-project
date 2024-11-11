@@ -10,6 +10,7 @@ import axios from 'axios'
 import { useDispatch } from 'react-redux';
 import { popupSlice, handleOpen } from '../store/slices/popupSlice';
 import { emailRegex, nameRegex, passwordRegex, phoneRegex } from '../constants/regex';
+import { useNavigate } from 'react-router-dom';
 
 const initialState = {
     id: '',
@@ -35,6 +36,7 @@ const reducer = (state, action) => {
 
 const JoinPage = () => {
     const disaptch = useDispatch();
+    const navigate = useNavigate();
     const [user, userDispatch] = useReducer(reducer, initialState);
 
     const checkRegex = () => {
@@ -54,10 +56,10 @@ const JoinPage = () => {
         }
         const res = await axios.post(USER_URL, user);
         if(res.data.success){
-            console.log(popupSlice.actions)
-            // disaptch(handleOpen(res.data.message));
+            disaptch(handleOpen(res.data.message));
+            navigate('/')
         } else {
-            // disaptch(handleOpen(res.data.message));
+            disaptch(handleOpen(res.data.message));
         }
     }
 
